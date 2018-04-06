@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.android.googlelistapp.EarthquakeActivity">
+    tools:context="com.example.erzhena.newsapp.DetailNewsActivity">
     <item
         android:id="@+id/favorites"
         android:icon="@drawable/if_bookmark"
@@ -16,11 +16,11 @@
         app:showAsAction="ifRoom"
         android:title="share" />
 
-    <!--<item-->
-        <!--android:id="@+id/delete"-->
-        <!--android:icon="@drawable/ic_add_pet"-->
-        <!--android:orderInCategory="1"-->
-        <!--app:showAsAction="ifRoom"-->
-        <!--android:title="delete" />-->
+    <item
+        android:id="@+id/delete"
+        android:icon="@drawable/ic_add_pet"
+        android:orderInCategory="1"
+        app:showAsAction="ifRoom"
+        android:title="delete" />
 
 </menu>

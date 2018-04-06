@@ -9,8 +9,10 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -47,8 +49,21 @@ public class SavedNewsActivity extends AppCompatActivity implements
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 Intent intent = new Intent(SavedNewsActivity.this, DetailNewsActivity.class);
                 Uri currentPetUri = ContentUris.withAppendedId(NewsContract.NewsEntry.CONTENT_URI, id);
+                intent.putExtra("ACTIVITY","detail");
                 intent.setData(currentPetUri);
                 startActivity(intent);
+                //finish();
+            }
+        });
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
             }
         });
 
@@ -64,7 +79,6 @@ public class SavedNewsActivity extends AppCompatActivity implements
                 NewsContract.NewsEntry.COLUMN_NEWS_DATA,
                 NewsContract.NewsEntry.COLUMN_NEWS_THUMB};
 
-        // This loader will execute the ContentProvider's query method on a background thread
         return new CursorLoader(this,   // Parent activity context
                 NewsContract.NewsEntry.CONTENT_URI,   // Provider content URI to query
                 projection,             // Columns to include in the resulting Cursor
@@ -72,6 +86,8 @@ public class SavedNewsActivity extends AppCompatActivity implements
                 null,                   // No selection arguments
                 null);                  // Default sort order
     }
+
+
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
@@ -83,5 +99,25 @@ public class SavedNewsActivity extends AppCompatActivity implements
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mCursorAdapter.swapCursor(null);
+    }
+
+    public void onBackPressed(){
+        Intent mainIntent = new Intent(this, MainActivity.class);
+        mainIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(mainIntent);
+        finish();
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

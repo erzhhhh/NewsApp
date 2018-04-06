@@ -20,5 +20,6 @@
     <string name="delete_news_successful">News was successfully deleted</string>
     <string name="delete_news_failed">News not deleted</string>
     <string name="unknown_date">Unknown date</string>
+    <string name="action_delete_all_news">Delete all news</string>
 
 </resources>

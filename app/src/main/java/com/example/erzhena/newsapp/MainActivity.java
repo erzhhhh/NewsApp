@@ -81,6 +81,7 @@ public class MainActivity extends AppCompatActivity
                 intent.putExtra("CURRENT_DATE", date);
                 intent.putExtra("CURRENT_URL", url);
                 intent.putExtra("CURRENT_THUMB", thumb);
+                intent.putExtra("ACTIVITY","main");
 
                 Uri currentPetUri = ContentUris.withAppendedId(NewsContract.NewsEntry.CONTENT_URI, l);
                 intent.setData(currentPetUri);
@@ -167,11 +168,6 @@ public class MainActivity extends AppCompatActivity
             navItem = SECTION_EVERYTHING;
             setTitle("Everything");
 
-        } else if (id == R.id.nav_saved_news) {
-
-
-            //setTitle("Saved news");
-            loadSavedNews();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -181,10 +177,10 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    private void loadSavedNews() {
-        Intent intent = new Intent(MainActivity.this, SavedNewsActivity.class);
-        startActivity(intent);
-    }
+//    private void loadSavedNews() {
+//        Intent intent = new Intent(MainActivity.this, SavedNewsActivity.class);
+//        startActivity(intent);
+//    }
 
 
     @Override
@@ -244,16 +240,19 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                return true;
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+            case R.id.already_saved:
+                Intent intent = new Intent(MainActivity.this, SavedNewsActivity.class);
+                startActivity(intent);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+
         }
-
-        return super.onOptionsItemSelected(item);
     }
-
-
 
 }

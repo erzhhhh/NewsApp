@@ -38,11 +38,6 @@
             android:icon="@drawable/ic_menu_manage"
             android:title="Everything" />
 
-        <item
-            android:id="@+id/nav_saved_news"
-            android:title="@string/menu_saved_news"
-            app:showAsAction="never" />
-
     </group>
 
 </menu>
