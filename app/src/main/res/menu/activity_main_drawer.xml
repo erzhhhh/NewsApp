@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_general"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="General news" />
+        <item
+            android:id="@+id/nav_business"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="Business news" />
+        <item
+            android:id="@+id/nav_entertainment"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Entertainment" />
+        <item
+            android:id="@+id/nav_health"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Health" />
+        <item
+            android:id="@+id/nav_science"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Science" />
+        <item
+            android:id="@+id/nav_sports"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Sports" />
+        <item
+            android:id="@+id/nav_technology"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Technology" />
+        <item
+            android:id="@+id/nav_everything"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Everything" />
+
+        <item
+            android:id="@+id/nav_saved_news"
+            android:title="@string/menu_saved_news"
+            app:showAsAction="never" />
+
+    </group>
+
+</menu>
