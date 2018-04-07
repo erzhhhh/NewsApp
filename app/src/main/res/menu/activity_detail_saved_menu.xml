@@ -11,7 +11,7 @@
         android:title="share" />
 
     <item
-        android:id="@+id/delete"
+        android:id="@+id/delete_from_saved"
         android:icon="@drawable/dustbin"
         android:orderInCategory="1"
         app:showAsAction="ifRoom"

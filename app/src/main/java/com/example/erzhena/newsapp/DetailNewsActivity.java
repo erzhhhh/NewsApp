@@ -120,7 +120,6 @@ public class DetailNewsActivity extends AppCompatActivity {
                 insertNews();
                 return true;
 
-
             default:
                 return super.onOptionsItemSelected(item);
 

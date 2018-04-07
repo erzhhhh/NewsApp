@@ -66,7 +66,6 @@ public class NewsProvider extends ContentProvider {
     private Uri insertNews(Uri uri, ContentValues values) {
         SQLiteDatabase database = mNewsHelper.getWritableDatabase();
 
-        // Insert the new pet with the given values
         long id = database.insert(NewsContract.NewsEntry.TABLE_NAME, null, values);
         // If the ID is -1, then the insertion failed. Log an error and return null.
         if (id == -1) {

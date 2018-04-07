@@ -1,29 +1,28 @@
 package com.example.erzhena.newsapp;
 
-import android.support.v4.app.LoaderManager;
-import android.support.v4.app.NavUtils;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import android.app.LoaderManager;
+import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.EditText;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.Spinner;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
 import com.example.erzhena.newsapp.Data.NewsContract;
@@ -31,7 +30,7 @@ import com.squareup.picasso.Picasso;
 
 public class DetailNewsFromSavedActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final int EXISTING_PET_LOADER = 0;
+    private static final int EXISTING_NEWS_LOADER = 0;
 
     private TextView mTitleDetailText;
     String tTitle;
@@ -54,6 +53,8 @@ public class DetailNewsFromSavedActivity extends AppCompatActivity implements Lo
         Intent intent = getIntent();
         mCurrentNewsUri = intent.getData();
 
+        Log.i("mCurrentNewsUri", String.valueOf(mCurrentNewsUri));
+
 
         mTitleDetailText = (TextView) findViewById(R.id.detail_title);
         mDescDetailText = (TextView) findViewById(R.id.detail_text);
@@ -69,7 +70,7 @@ public class DetailNewsFromSavedActivity extends AppCompatActivity implements Lo
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        getSupportLoaderManager().initLoader(EXISTING_PET_LOADER, null, this);
+        getLoaderManager().initLoader(EXISTING_NEWS_LOADER, null, this);
     }
 
     @Override
@@ -92,10 +93,18 @@ public class DetailNewsFromSavedActivity extends AppCompatActivity implements Lo
                 startActivity(sendIntent);
                 return true;
 
-            case android.R.id.home:
-                Intent mainIntent = new Intent(this, MainActivity.class);
+            case R.id.delete_from_saved:
+                deleteNews();
+                Intent mainIntent = new Intent(this, SavedNewsActivity.class);
                 mainIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(mainIntent);
+                finish();
+                return true;
+
+            case android.R.id.home:
+                Intent intent = new Intent(this, SavedNewsActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
                 finish();
                 return true;
 
@@ -105,13 +114,11 @@ public class DetailNewsFromSavedActivity extends AppCompatActivity implements Lo
         }
     }
 
-
     public void onBackPressed(){
             Intent mainIntent = new Intent(this, SavedNewsActivity.class);
             startActivity(mainIntent);
             finish();
     }
-
 
 
     @Override
@@ -126,10 +133,6 @@ public class DetailNewsFromSavedActivity extends AppCompatActivity implements Lo
                 NewsContract.NewsEntry.COLUMN_NEWS_THUMB,
                 NewsContract.NewsEntry.COLUMN_NEWS_URL};
 
-
-        Log.i("onCreateLoader","onCreateLoader");
-
-        // This loader will execute the ContentProvider's query method on a background thread
         return new CursorLoader(this,   // Parent activity context
                 NewsContract.NewsEntry.CONTENT_URI,   // Provider content URI to query
                 projection,             // Columns to include in the resulting Cursor
@@ -140,15 +143,11 @@ public class DetailNewsFromSavedActivity extends AppCompatActivity implements Lo
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        // Bail early if the cursor is null or there is less than 1 row in the cursor
         if (cursor == null || cursor.getCount() < 1) {
             return;
         }
 
-        // Proceed with moving to the first row of the cursor and reading data from it
-        // (This should be the only row in the cursor)
         if (cursor.moveToFirst()) {
-            // Find the columns of pet attributes that we're interested in
             int titleColumnIndex = cursor.getColumnIndex(NewsContract.NewsEntry.COLUMN_NEWS_TITLE);
             int descColumnIndex = cursor.getColumnIndex(NewsContract.NewsEntry.COLUMN_NEWS_DESC);
             int dataColumnIndex = cursor.getColumnIndex(NewsContract.NewsEntry.COLUMN_NEWS_DATA);
@@ -196,5 +195,18 @@ public class DetailNewsFromSavedActivity extends AppCompatActivity implements Lo
 //        mURLDetailText.setText("");
 
         finish();
+    }
+
+    private void deleteNews() {
+        if (mCurrentNewsUri != null) {
+            int rowsDeleted = getContentResolver().delete(mCurrentNewsUri, null, null);
+            if (rowsDeleted == 0) {
+                Toast.makeText(this, getString(R.string.editor_delete_news_success),
+                        Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, getString(R.string.editor_delete_news_failed),
+                        Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }

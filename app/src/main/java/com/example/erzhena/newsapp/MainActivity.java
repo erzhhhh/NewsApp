@@ -61,7 +61,6 @@ public class MainActivity extends AppCompatActivity
         mEmptyStateTextView = (TextView) findViewById(R.id.empty_view);
         newsListView.setEmptyView(mEmptyStateTextView);
 
-
         mAdapter = new NewsAdapter(this, new ArrayList<News>());
         newsListView.setAdapter(mAdapter);
 
@@ -85,9 +84,8 @@ public class MainActivity extends AppCompatActivity
                 intent.putExtra("CURRENT_THUMB", thumb);
                 intent.putExtra("ACTIVITY","main");
 
-                Uri currentPetUri = ContentUris.withAppendedId(NewsContract.NewsEntry.CONTENT_URI, l);
-                intent.setData(currentPetUri);
-                Log.i("PutCurrentPetUri", String.valueOf(currentPetUri));
+                Uri currentNewsUri = ContentUris.withAppendedId(NewsContract.NewsEntry.CONTENT_URI, l);
+                intent.setData(currentNewsUri);
 
                 startActivity(intent);
             }
@@ -164,11 +162,7 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_technology) {
             navItem = SECTION_TECH;
-            setTitle("technology news");
-
-        } else if (id == R.id.nav_everything) {
-            navItem = SECTION_EVERYTHING;
-            setTitle("Everything");
+            setTitle("Technology news");
 
         }
 
@@ -217,7 +211,7 @@ public class MainActivity extends AppCompatActivity
         View loadingIndicator = findViewById(R.id.loading_spinner);
         loadingIndicator.setVisibility(View.GONE);
 
-        mEmptyStateTextView.setText(R.string.no_earthquakes);
+        mEmptyStateTextView.setText(R.string.no_news);
 
         mAdapter.clear();
 
