@@ -8,8 +8,8 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/w"
-        android:icon="@drawable/if_bookmark"
+        android:id="@+id/already_saved"
+        android:icon="@drawable/bookmark"
         android:orderInCategory="1"
         app:showAsAction="ifRoom"
         android:title="toFavourite" />

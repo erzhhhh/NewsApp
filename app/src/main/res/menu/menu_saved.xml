@@ -7,6 +7,4 @@
         android:id="@+id/action_delete_all_news"
         android:title="@string/action_delete_all_news"
         app:showAsAction="never" />
-
-
 </menu>

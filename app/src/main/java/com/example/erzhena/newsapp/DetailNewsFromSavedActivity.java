@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,12 +17,8 @@ import android.widget.Toast;
 import com.example.erzhena.newsapp.Data.NewsContract;
 import com.squareup.picasso.Picasso;
 
-public class DetailNewsActivity extends AppCompatActivity {
+public class DetailNewsFromSavedActivity extends AppCompatActivity {
 
-    private TextView detail_URL;
-    String tURL;
-    private TextView detail_author;
-    String tAuthor;
     private TextView detail_title;
     String tTitle;
     private TextView detail_desc;
@@ -32,6 +27,7 @@ public class DetailNewsActivity extends AppCompatActivity {
     String tDate;
     private ImageView detail_image;
     String tThumb;
+    String tURL;
     private Uri mCurrentNewsUri;
     String prevActivity;
 
@@ -42,7 +38,6 @@ public class DetailNewsActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-
         mCurrentNewsUri = intent.getData();
 
         String dTitle = intent.getStringExtra("CURRENT_TITLE");
@@ -50,20 +45,13 @@ public class DetailNewsActivity extends AppCompatActivity {
         String dDate = intent.getStringExtra("CURRENT_DATE");
         String dThumb = intent.getStringExtra("CURRENT_THUMB");
         String dURL = intent.getStringExtra("CURRENT_URL");
-        String dAuthor = intent.getStringExtra("CURRENT_AUTHOR");
 
-        tAuthor = dAuthor;
+
         tTitle = dTitle;
         tDesc = dDesc;
         tDate = dDate;
         tThumb = dThumb;
         tURL = dURL;
-
-        detail_date = (TextView) findViewById(R.id.detail_date);
-        detail_date.setText(dDate);
-
-        detail_author = (TextView) findViewById(R.id.detail_author);
-        detail_author.setText(dAuthor);
 
         detail_title = (TextView) findViewById(R.id.detail_title);
         detail_title.setText(dTitle);
@@ -71,8 +59,8 @@ public class DetailNewsActivity extends AppCompatActivity {
         detail_desc = (TextView) findViewById(R.id.detail_text);
         detail_desc.setText(dDesc);
 
-        detail_URL = (TextView) findViewById(R.id.detail_link);
-        detail_URL.setText(dURL);
+        detail_date = (TextView) findViewById(R.id.detail_date);
+        detail_date.setText(dDate);
 
         detail_image = (ImageView) findViewById(R.id.detail_image);
         Picasso.get().load(dThumb).into(detail_image);
@@ -88,7 +76,7 @@ public class DetailNewsActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.activity_detail_menu, menu);
+        inflater.inflate(R.menu.activity_detail_saved_menu, menu);
         return true;
     }
 
@@ -97,7 +85,7 @@ public class DetailNewsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.share:
-                String dt = tTitle + "\n "+ tDesc + "\n" + tDate + "\n" + tURL;
+                String dt = tTitle + "\n "+ tDesc + "\n" + tDate;
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
                 sendIntent.putExtra(Intent.EXTRA_TEXT, dt);
@@ -149,7 +137,7 @@ public class DetailNewsActivity extends AppCompatActivity {
 
 
     public void onBackPressed(){
-            Intent mainIntent = new Intent(this, MainActivity.class);
+            Intent mainIntent = new Intent(this, SavedNewsActivity.class);
             startActivity(mainIntent);
             finish();
     }

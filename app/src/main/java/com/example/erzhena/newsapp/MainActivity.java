@@ -69,13 +69,15 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 News currentNews= mAdapter.getItem(position);
+                String date = currentNews.getmDateValue();
+                String author = currentNews.getmAuthor();
                 String title = currentNews.getmTitle();
                 String desc = currentNews.getmDescription();
-                String date = currentNews.getmDateValue();
                 String url = currentNews.getmURL();
                 String thumb = currentNews.getmThumbnail();
 
                 Intent intent = new Intent(MainActivity.this, DetailNewsActivity.class);
+                intent.putExtra("CURRENT_AUTHOR", author);
                 intent.putExtra("CURRENT_TITLE", title);
                 intent.putExtra("CURRENT_DESC", desc);
                 intent.putExtra("CURRENT_DATE", date);

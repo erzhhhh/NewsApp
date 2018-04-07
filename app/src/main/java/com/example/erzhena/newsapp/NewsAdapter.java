@@ -1,6 +1,7 @@
 package com.example.erzhena.newsapp;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +35,12 @@ public class NewsAdapter extends ArrayAdapter<News> {
 
         TextView dateTextView = (TextView) listItemView.findViewById(R.id.news_date);
         dateTextView.setText(currentNews.getmDateValue());
+
+        TextView authorTextView = (TextView) listItemView.findViewById(R.id.news_authors);
+        authorTextView.setText(currentNews.getmAuthor());
+
+        TextView sourceTextView = (TextView) listItemView.findViewById(R.id.news_source);
+        sourceTextView.setText(currentNews.getmSource());
 
         ImageView picture = (ImageView) listItemView.findViewById(R.id.news_thumbnail);
         String thumbnail = currentNews.getmThumbnail();
