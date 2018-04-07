@@ -3,6 +3,7 @@ package com.example.erzhena.newsapp;
 
 import android.app.LoaderManager;
 import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,6 +11,7 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -30,8 +32,10 @@ import com.squareup.picasso.Picasso;
 public class SavedNewsActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>  {
 
-    private static final int NEWS_LOADER = 0;
+    /** Identifier for the pet data loader */
+    private static final int PET_LOADER = 0;
 
+    /** Adapter for the ListView */
     NewsCursorAdapter mCursorAdapter;
 
     @Override
@@ -39,23 +43,19 @@ public class SavedNewsActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saved);
 
-        ListView newsListView = (ListView) findViewById(R.id.list);
-
+        ListView petListView = (ListView) findViewById(R.id.list);
         View emptyView = findViewById(R.id.empty_view);
-        newsListView.setEmptyView(emptyView);
-
+        petListView.setEmptyView(emptyView);
         mCursorAdapter = new NewsCursorAdapter(this, null);
-        newsListView.setAdapter(mCursorAdapter);
+        petListView.setAdapter(mCursorAdapter);
 
-
-        newsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        petListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                Intent intent = new Intent(SavedNewsActivity.this, DetailNewsFromSavedActivity.class);
+                Intent intent = new Intent(SavedNewsActivity.this,  DetailNewsFromSavedActivity.class);
                 Uri currentPetUri = ContentUris.withAppendedId(NewsContract.NewsEntry.CONTENT_URI, id);
                 intent.setData(currentPetUri);
                 startActivity(intent);
-                //finish();
             }
         });
 
@@ -67,21 +67,46 @@ public class SavedNewsActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 onBackPressed();
-            }
-        });
+            }});
 
-        getLoaderManager().initLoader(NEWS_LOADER, null, this);
+        getLoaderManager().initLoader(PET_LOADER, null, this);
+    }
 
+    private void deleteAllPets() {
+        int rowsDeleted = getContentResolver().delete(NewsContract.NewsEntry.CONTENT_URI, null, null);
+        Log.v("CatalogActivity", rowsDeleted + " rows deleted from pet database");
     }
 
     @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_saved, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_delete_all_news:
+                showDeleteConfirmationDialog();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+        // Define a projection that specifies the columns from the table we care about.
         String[] projection = {
                 NewsContract.NewsEntry._ID,
                 NewsContract.NewsEntry.COLUMN_NEWS_TITLE,
+                NewsContract.NewsEntry.COLUMN_NEWS_DESC,
                 NewsContract.NewsEntry.COLUMN_NEWS_DATA,
-                NewsContract.NewsEntry.COLUMN_NEWS_THUMB};
+                NewsContract.NewsEntry.COLUMN_NEWS_SOURCE,
+                NewsContract.NewsEntry.COLUMN_NEWS_AUTHOR,
+                NewsContract.NewsEntry.COLUMN_NEWS_THUMB,
+                NewsContract.NewsEntry.COLUMN_NEWS_URL};
 
+        // This loader will execute the ContentProvider's query method on a background thread
         return new CursorLoader(this,   // Parent activity context
                 NewsContract.NewsEntry.CONTENT_URI,   // Provider content URI to query
                 projection,             // Columns to include in the resulting Cursor
@@ -89,8 +114,6 @@ public class SavedNewsActivity extends AppCompatActivity implements
                 null,                   // No selection arguments
                 null);                  // Default sort order
     }
-
-
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
@@ -104,43 +127,13 @@ public class SavedNewsActivity extends AppCompatActivity implements
         mCursorAdapter.swapCursor(null);
     }
 
-    public void onBackPressed(){
-        Intent mainIntent = new Intent(this, MainActivity.class);
-        mainIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(mainIntent);
-        finish();
-    }
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                return true;
-
-            case R.id.action_delete_all_news:
-                showDeleteConfirmationDialog();
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_saved, menu);
-        return true;
-    }
-
     private void showDeleteConfirmationDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.delete_all_news_dialog_msg);
         builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked the "Delete" button, so delete the pet.
-                deleteAllNews();
+                deleteAllPets();
             }
         });
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -153,15 +146,7 @@ public class SavedNewsActivity extends AppCompatActivity implements
             }
         });
 
-
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
-    }
-
-
-    private void deleteAllNews() {
-        int rowsDeleted = getContentResolver().delete(NewsContract.NewsEntry.CONTENT_URI, null, null);
-        Toast.makeText(this, R.string.post_delete_all_news,
-                Toast.LENGTH_SHORT).show();
     }
 }

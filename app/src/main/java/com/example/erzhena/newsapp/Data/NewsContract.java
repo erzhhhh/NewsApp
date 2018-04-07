@@ -19,6 +19,8 @@ public final class NewsContract {
         public final static String COLUMN_NEWS_TITLE = "title";
         public final static String COLUMN_NEWS_DESC = "desc";
         public final static String COLUMN_NEWS_DATA = "data";
+        public final static String COLUMN_NEWS_SOURCE = "source";
+        public final static String COLUMN_NEWS_AUTHOR = "author";
         public final static String COLUMN_NEWS_THUMB = "thumb";
         public final static String COLUMN_NEWS_URL = "url";
 
@@ -31,8 +33,6 @@ public final class NewsContract {
         public static final String CONTENT_ITEM_TYPE =
                 ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_NEWS;
 
-
-        //CONTENT_URI = content://com.example.erzhena.newsapp/news
     }
 
 }

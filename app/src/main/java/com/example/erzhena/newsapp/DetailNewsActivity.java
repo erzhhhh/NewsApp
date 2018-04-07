@@ -34,6 +34,7 @@ public class DetailNewsActivity extends AppCompatActivity {
     String tThumb;
     private Uri mCurrentNewsUri;
     String prevActivity;
+    String tSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +52,7 @@ public class DetailNewsActivity extends AppCompatActivity {
         String dThumb = intent.getStringExtra("CURRENT_THUMB");
         String dURL = intent.getStringExtra("CURRENT_URL");
         String dAuthor = intent.getStringExtra("CURRENT_AUTHOR");
+        String dSource = intent.getStringExtra("CURRENT_SOURCE");
 
         tAuthor = dAuthor;
         tTitle = dTitle;
@@ -58,6 +60,8 @@ public class DetailNewsActivity extends AppCompatActivity {
         tDate = dDate;
         tThumb = dThumb;
         tURL = dURL;
+        tSource = dSource;
+
 
         detail_date = (TextView) findViewById(R.id.detail_date);
         detail_date.setText(dDate);
@@ -127,7 +131,9 @@ public class DetailNewsActivity extends AppCompatActivity {
         ContentValues values = new ContentValues();
         values.put(NewsContract.NewsEntry.COLUMN_NEWS_TITLE, tTitle.trim());
         values.put(NewsContract.NewsEntry.COLUMN_NEWS_DESC, tDesc.trim());
+        values.put(NewsContract.NewsEntry.COLUMN_NEWS_AUTHOR, tAuthor.trim());
         values.put(NewsContract.NewsEntry.COLUMN_NEWS_DATA, tDate.trim());
+        values.put(NewsContract.NewsEntry.COLUMN_NEWS_SOURCE, tDate.trim());
         values.put(NewsContract.NewsEntry.COLUMN_NEWS_THUMB, tThumb.trim());
         values.put(NewsContract.NewsEntry.COLUMN_NEWS_URL, tURL.trim());
 

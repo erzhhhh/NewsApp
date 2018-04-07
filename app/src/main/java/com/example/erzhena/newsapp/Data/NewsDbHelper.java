@@ -21,7 +21,9 @@ public class NewsDbHelper extends SQLiteOpenHelper {
                 + NewsContract.NewsEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + NewsContract.NewsEntry.COLUMN_NEWS_TITLE + " TEXT NOT NULL, "
                 + NewsContract.NewsEntry.COLUMN_NEWS_DESC + " TEXT, "
+                + NewsContract.NewsEntry.COLUMN_NEWS_AUTHOR + " TEXT, "
                 + NewsContract.NewsEntry.COLUMN_NEWS_DATA + " TEXT NOT NULL, "
+                + NewsContract.NewsEntry.COLUMN_NEWS_SOURCE + " TEXT, "
                 + NewsContract.NewsEntry.COLUMN_NEWS_THUMB + " TEXT, "
                 + NewsContract.NewsEntry.COLUMN_NEWS_URL + " TEXT NOT NULL);";
 
