@@ -1,8 +1,6 @@
 package com.example.erzhena.newsapp;
 
 import android.app.LoaderManager;
-import android.content.ContentUris;
-import android.content.ContentValues;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,27 +8,20 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
 import com.example.erzhena.newsapp.Data.NewsContract;
 import com.squareup.picasso.Picasso;
 
 public class DetailNewsFromSavedActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
-
-    NewsCursorAdapter mCursorAdapter;
 
     private static final int EXISTING_NEWS_LOADER = 0;
 
@@ -51,6 +42,7 @@ public class DetailNewsFromSavedActivity extends AppCompatActivity implements Lo
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+        setTitle("Saved news");
 
         Intent intent = getIntent();
         mCurrentNewsUri = intent.getData();
@@ -130,12 +122,12 @@ public class DetailNewsFromSavedActivity extends AppCompatActivity implements Lo
                 NewsContract.NewsEntry.COLUMN_NEWS_THUMB,
                 NewsContract.NewsEntry.COLUMN_NEWS_URL};
 
-        return new CursorLoader(this,   // Parent activity context
-                mCurrentNewsUri,   // Provider content URI to query
-                projection,             // Columns to include in the resulting Cursor
-                null,                   // No selection clause
-                null,                   // No selection arguments
-                null);              // Default sort order
+        return new CursorLoader(this,
+                mCurrentNewsUri,
+                projection,
+                null,
+                null,
+                null);
     }
 
     @Override
@@ -148,27 +140,20 @@ public class DetailNewsFromSavedActivity extends AppCompatActivity implements Lo
             int titleColumnIndex = cursor.getColumnIndex(NewsContract.NewsEntry.COLUMN_NEWS_TITLE);
             int descColumnIndex = cursor.getColumnIndex(NewsContract.NewsEntry.COLUMN_NEWS_DESC);
             int dataColumnIndex = cursor.getColumnIndex(NewsContract.NewsEntry.COLUMN_NEWS_DATA);
-            int sourceColumnIndex = cursor.getColumnIndex(NewsContract.NewsEntry.COLUMN_NEWS_SOURCE);
             int authorColumnIndex = cursor.getColumnIndex(NewsContract.NewsEntry.COLUMN_NEWS_AUTHOR);
             int thumbColumnIndex = cursor.getColumnIndex(NewsContract.NewsEntry.COLUMN_NEWS_THUMB);
             int urlColumnIndex = cursor.getColumnIndex(NewsContract.NewsEntry.COLUMN_NEWS_URL);
 
-            // Extract out the value from the Cursor for the given column index
             String title = cursor.getString(titleColumnIndex);
             String desc = cursor.getString(descColumnIndex);
             String data = cursor.getString(dataColumnIndex);
-            //source is not using in detail view
-            String source = cursor.getString(sourceColumnIndex);
             String author = cursor.getString(authorColumnIndex);
             String thumb = cursor.getString(thumbColumnIndex);
             String url = cursor.getString(urlColumnIndex);
 
 
-            // Update the views on the screen with the values from the database
             mTitleDetailText.setText(title);
             mDescDetailText.setText(desc);
-            mDateDetailText.setText(data);
-            //without source
             mAuthorDetailText.setText(author);
             Picasso.get().load(thumb).into(mImageDetail);
             mURLDetailText.setText(url);

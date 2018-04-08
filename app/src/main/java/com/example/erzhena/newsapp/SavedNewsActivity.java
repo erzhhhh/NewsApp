@@ -1,6 +1,5 @@
 package com.example.erzhena.newsapp;
 
-
 import android.app.LoaderManager;
 import android.content.ContentUris;
 import android.content.CursorLoader;
@@ -13,7 +12,6 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,12 +27,13 @@ public class SavedNewsActivity extends AppCompatActivity implements
 
     NewsCursorAdapter mCursorAdapter;
 
-    int d;
+    int rowsCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saved);
+        setTitle("Saved news");
 
         ListView newsListView = (ListView) findViewById(R.id.list);
 
@@ -74,7 +73,7 @@ public class SavedNewsActivity extends AppCompatActivity implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if(d != 0) {
+        if(rowsCount != 0) {
             getMenuInflater().inflate(R.menu.menu_saved, menu);
             return true;
         }
@@ -103,18 +102,18 @@ public class SavedNewsActivity extends AppCompatActivity implements
                 NewsContract.NewsEntry.COLUMN_NEWS_THUMB,
                 NewsContract.NewsEntry.COLUMN_NEWS_URL};
 
-        return new CursorLoader(this,   // Parent activity context
-                NewsContract.NewsEntry.CONTENT_URI,   // Provider content URI to query
-                projection,             // Columns to include in the resulting Cursor
-                null,                   // No selection clause
-                null,                   // No selection arguments
-                null);                  // Default sort order
+        return new CursorLoader(this,
+                NewsContract.NewsEntry.CONTENT_URI,
+                projection,
+                null,
+                null,
+                null);
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        int p = cursor.getCount();
-        d = p;
+        int rowsCountFromCursor = cursor.getCount();
+        rowsCount = rowsCountFromCursor;
 
         View loadingIndicator = findViewById(R.id.loading_spinner);
         loadingIndicator.setVisibility(View.GONE);

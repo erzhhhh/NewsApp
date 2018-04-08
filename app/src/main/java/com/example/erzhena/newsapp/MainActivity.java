@@ -12,13 +12,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,9 +34,7 @@ public class MainActivity extends AppCompatActivity
 
     private static final int NEWS_LOADER_ID = 0;
     private NewsAdapter mAdapter;
-    private NewsCursorAdapter mNewsCursorAdapter;
     private TextView mEmptyStateTextView;
-    private NavigationView navigationView;
     private static final String SECTION_GENERAL = "general";
     private static final String SECTION_BUSINESS = "business";
     private static final String SECTION_ENTERTAINMENT = "entertainment";
@@ -47,7 +43,6 @@ public class MainActivity extends AppCompatActivity
     private static final String SECTION_SPORT = "sport";
     private static final String SECTION_TECH = "technology";
     private static final String SECTION_EVERYTHING = "everything";
-    //private static final String SECTION_SAVED_NEWS = "saved_news";
     private String navItem = SECTION_GENERAL;
     ListView newsListView;
 
@@ -56,6 +51,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setTitle("General news");
 
         newsListView = (ListView) findViewById(R.id.list);
         mEmptyStateTextView = (TextView) findViewById(R.id.empty_view);
@@ -63,6 +59,7 @@ public class MainActivity extends AppCompatActivity
 
         mAdapter = new NewsAdapter(this, new ArrayList<News>());
         newsListView.setAdapter(mAdapter);
+
 
         newsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -94,7 +91,6 @@ public class MainActivity extends AppCompatActivity
 
         ConnectivityManager connMgr = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
-
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
 
@@ -218,7 +214,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onLoaderReset(Loader<List<News>> loader) {
-        // Loader reset, so we can clear out our existing data.
         mAdapter.clear();
     }
 
