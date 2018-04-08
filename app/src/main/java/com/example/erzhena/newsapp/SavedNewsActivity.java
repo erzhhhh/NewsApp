@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.erzhena.newsapp.Data.NewsContract;
 
@@ -29,6 +30,8 @@ public class SavedNewsActivity extends AppCompatActivity implements
 
     int rowsCount;
 
+    private TextView mEmptyStateTextView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,8 +40,8 @@ public class SavedNewsActivity extends AppCompatActivity implements
 
         ListView newsListView = (ListView) findViewById(R.id.list);
 
-        View emptyView = findViewById(R.id.empty_view);
-        newsListView.setEmptyView(emptyView);
+        mEmptyStateTextView = (TextView) findViewById(R.id.empty_view);
+        newsListView.setEmptyView(mEmptyStateTextView);
 
         mCursorAdapter = new NewsCursorAdapter(this, null);
         newsListView.setAdapter(mCursorAdapter);
@@ -69,6 +72,9 @@ public class SavedNewsActivity extends AppCompatActivity implements
 
     private void deleteAllNews() {
         int rowsDeleted = getContentResolver().delete(NewsContract.NewsEntry.CONTENT_URI, null, null);
+        mCursorAdapter.notifyDataSetChanged();
+        finish();
+        startActivity(getIntent());
     }
 
     @Override
@@ -117,6 +123,11 @@ public class SavedNewsActivity extends AppCompatActivity implements
 
         View loadingIndicator = findViewById(R.id.loading_spinner);
         loadingIndicator.setVisibility(View.GONE);
+
+        if(rowsCount == 0) {
+            mEmptyStateTextView.setText(R.string.no_saved_news);
+        }
+
         mCursorAdapter.swapCursor(cursor);
     }
 
@@ -143,5 +154,11 @@ public class SavedNewsActivity extends AppCompatActivity implements
 
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+
+    public void onBackPressed(){
+        Intent mainIntent = new Intent(this, MainActivity.class);
+        startActivity(mainIntent);
+        finish();
     }
 }

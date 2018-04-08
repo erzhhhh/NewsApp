@@ -233,6 +233,7 @@ public class MainActivity extends AppCompatActivity
             case R.id.already_saved:
                 Intent intent = new Intent(MainActivity.this, SavedNewsActivity.class);
                 startActivity(intent);
+                finish();
                 return true;
 
             default:

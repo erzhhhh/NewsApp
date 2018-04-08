@@ -197,6 +197,7 @@ public class DetailNewsFromSavedActivity extends AppCompatActivity implements Lo
     private void deleteNews() {
         if (mCurrentNewsUri != null) {
             int rowsDeleted = getContentResolver().delete(mCurrentNewsUri, null, null);
+
             if (rowsDeleted == 0) {
                 Toast.makeText(this, getString(R.string.editor_delete_news_success),
                         Toast.LENGTH_SHORT).show();
