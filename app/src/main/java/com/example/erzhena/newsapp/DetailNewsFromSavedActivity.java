@@ -95,11 +95,7 @@ public class DetailNewsFromSavedActivity extends AppCompatActivity implements Lo
                 return true;
 
             case R.id.delete_from_saved:
-                deleteNews();
-                Intent mainIntent = new Intent(this, SavedNewsActivity.class);
-                mainIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(mainIntent);
-                finish();
+                showDeleteConfirmationDialog();
                 return true;
 
             case android.R.id.home:
@@ -133,9 +129,6 @@ public class DetailNewsFromSavedActivity extends AppCompatActivity implements Lo
                 NewsContract.NewsEntry.COLUMN_NEWS_AUTHOR,
                 NewsContract.NewsEntry.COLUMN_NEWS_THUMB,
                 NewsContract.NewsEntry.COLUMN_NEWS_URL};
-
-        Log.i("projection", NewsContract.NewsEntry._ID);
-
 
         return new CursorLoader(this,   // Parent activity context
                 mCurrentNewsUri,   // Provider content URI to query
@@ -192,16 +185,42 @@ public class DetailNewsFromSavedActivity extends AppCompatActivity implements Lo
         finish();
     }
 
+    private void showDeleteConfirmationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.delete_all_news_dialog_msg_saved);
+        builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                deleteNews();
+                Intent mainIntent = new Intent(DetailNewsFromSavedActivity.this, SavedNewsActivity.class);
+                mainIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(mainIntent);
+                finish();
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
     private void deleteNews() {
         if (mCurrentNewsUri != null) {
             int rowsDeleted = getContentResolver().delete(mCurrentNewsUri, null, null);
             if (rowsDeleted == 0) {
                 Toast.makeText(this, getString(R.string.editor_delete_news_success),
                         Toast.LENGTH_SHORT).show();
+
             } else {
                 Toast.makeText(this, getString(R.string.editor_delete_news_failed),
                         Toast.LENGTH_SHORT).show();
             }
         }
     }
+
 }

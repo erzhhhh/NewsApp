@@ -35,8 +35,10 @@ public class SavedNewsActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_saved);
 
         ListView newsListView = (ListView) findViewById(R.id.list);
+
         View emptyView = findViewById(R.id.empty_view);
         newsListView.setEmptyView(emptyView);
+
         mCursorAdapter = new NewsCursorAdapter(this, null);
         newsListView.setAdapter(mCursorAdapter);
 
@@ -46,9 +48,6 @@ public class SavedNewsActivity extends AppCompatActivity implements
                 Intent newsDetailIntent = new Intent(SavedNewsActivity.this,  DetailNewsFromSavedActivity.class);
                 Uri currentNewsUri = ContentUris.withAppendedId(NewsContract.NewsEntry.CONTENT_URI, id);
                 newsDetailIntent.setData(currentNewsUri);
-
-                Log.i("currentNewsUriDB", String.valueOf(currentNewsUri));
-
                 startActivity(newsDetailIntent);
                 finish();
             }
@@ -73,8 +72,8 @@ public class SavedNewsActivity extends AppCompatActivity implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_saved, menu);
-        return true;
+            getMenuInflater().inflate(R.menu.menu_saved, menu);
+            return true;
     }
 
     @Override

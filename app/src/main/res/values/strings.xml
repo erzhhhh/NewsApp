@@ -29,4 +29,10 @@
     <string name="editor_delete_news_failed">News was deleted</string>
     <string name="editor_delete_news_success">News not deleted</string>
 
+    <string name="delete_all_news_dialog_msg_saved">Delete saved news?</string>
+    <string name="delete_news_success_saved">News was deleted</string>
+    <string name="delete_news_failed_saved">News not deleted</string>
+
+    <string name="no_saved_news">No saved news</string>
+
 </resources>

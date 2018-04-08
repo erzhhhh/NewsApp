@@ -173,11 +173,6 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-//    private void loadSavedNews() {
-//        Intent intent = new Intent(MainActivity.this, SavedNewsActivity.class);
-//        startActivity(intent);
-//    }
-
 
     @Override
     public Loader<List<News>> onCreateLoader(int i, Bundle bundle) {
