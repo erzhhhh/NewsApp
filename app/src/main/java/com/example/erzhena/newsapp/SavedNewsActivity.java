@@ -29,6 +29,8 @@ public class SavedNewsActivity extends AppCompatActivity implements
 
     NewsCursorAdapter mCursorAdapter;
 
+    int d;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,8 +74,11 @@ public class SavedNewsActivity extends AppCompatActivity implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        if(d != 0) {
             getMenuInflater().inflate(R.menu.menu_saved, menu);
             return true;
+        }
+        return false;
     }
 
     @Override
@@ -107,10 +112,13 @@ public class SavedNewsActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        int p = cursor.getCount();
+        d = p;
+
         View loadingIndicator = findViewById(R.id.loading_spinner);
         loadingIndicator.setVisibility(View.GONE);
-        mCursorAdapter.swapCursor(data);
+        mCursorAdapter.swapCursor(cursor);
     }
 
     @Override
