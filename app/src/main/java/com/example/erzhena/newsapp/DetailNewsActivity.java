@@ -43,7 +43,6 @@ public class DetailNewsActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-
         mCurrentNewsUri = intent.getData();
 
         String dTitle = intent.getStringExtra("CURRENT_TITLE");
@@ -61,7 +60,6 @@ public class DetailNewsActivity extends AppCompatActivity {
         tThumb = dThumb;
         tURL = dURL;
         tSource = dSource;
-
 
         detail_date = (TextView) findViewById(R.id.detail_date);
         detail_date.setText(dDate);
@@ -137,15 +135,11 @@ public class DetailNewsActivity extends AppCompatActivity {
         values.put(NewsContract.NewsEntry.COLUMN_NEWS_URL, tURL.trim());
 
         Uri newUri = getContentResolver().insert(NewsContract.NewsEntry.CONTENT_URI, values);
-        Log.i("newUri", String.valueOf(newUri));
 
-        // Show a toast message depending on whether or not the insertion was successful.
         if (newUri == null) {
-            // If the new content URI is null, then there was an error with insertion.
             Toast.makeText(this, getString(R.string.fail_added_news),
                     Toast.LENGTH_SHORT).show();
         } else {
-            // Otherwise, the insertion was successful and we can display a toast.
             Toast.makeText(this, getString(R.string.success_added_news),
                     Toast.LENGTH_SHORT).show();
         }

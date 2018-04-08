@@ -30,20 +30,22 @@ import com.squareup.picasso.Picasso;
 
 public class DetailNewsFromSavedActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
+    NewsCursorAdapter mCursorAdapter;
+
     private static final int EXISTING_NEWS_LOADER = 0;
 
     private TextView mTitleDetailText;
-    String tTitle;
     private TextView mDescDetailText;
-    String tDesc;
     private TextView mDateDetailText;
     private TextView mAuthorDetailText;
     private TextView mURLDetailText;
-    String tDate;
     private ImageView mImageDetail;
-    String tThumb;
-    String tURL;
     private Uri mCurrentNewsUri;
+
+    String tTitle;
+    String tDesc;
+    String tDate;
+    String tURL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +55,7 @@ public class DetailNewsFromSavedActivity extends AppCompatActivity implements Lo
         Intent intent = getIntent();
         mCurrentNewsUri = intent.getData();
 
-        Log.i("mCurrentNewsUri", String.valueOf(mCurrentNewsUri));
-
+        getLoaderManager().initLoader(EXISTING_NEWS_LOADER, null, this);
 
         mTitleDetailText = (TextView) findViewById(R.id.detail_title);
         mDescDetailText = (TextView) findViewById(R.id.detail_text);
@@ -70,7 +71,7 @@ public class DetailNewsFromSavedActivity extends AppCompatActivity implements Lo
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        getLoaderManager().initLoader(EXISTING_NEWS_LOADER, null, this);
+
     }
 
     @Override
@@ -133,8 +134,11 @@ public class DetailNewsFromSavedActivity extends AppCompatActivity implements Lo
                 NewsContract.NewsEntry.COLUMN_NEWS_THUMB,
                 NewsContract.NewsEntry.COLUMN_NEWS_URL};
 
+        Log.i("projection", NewsContract.NewsEntry._ID);
+
+
         return new CursorLoader(this,   // Parent activity context
-                NewsContract.NewsEntry.CONTENT_URI,   // Provider content URI to query
+                mCurrentNewsUri,   // Provider content URI to query
                 projection,             // Columns to include in the resulting Cursor
                 null,                   // No selection clause
                 null,                   // No selection arguments
@@ -147,7 +151,7 @@ public class DetailNewsFromSavedActivity extends AppCompatActivity implements Lo
             return;
         }
 
-        if (cursor.moveToFirst()) {
+        if (cursor.moveToNext()) {
             int titleColumnIndex = cursor.getColumnIndex(NewsContract.NewsEntry.COLUMN_NEWS_TITLE);
             int descColumnIndex = cursor.getColumnIndex(NewsContract.NewsEntry.COLUMN_NEWS_DESC);
             int dataColumnIndex = cursor.getColumnIndex(NewsContract.NewsEntry.COLUMN_NEWS_DATA);
@@ -180,20 +184,11 @@ public class DetailNewsFromSavedActivity extends AppCompatActivity implements Lo
             tDesc = desc;
             tDate = data;
             tURL = url;
-
         }
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        // If the loader is invalidated, clear out all the data from the input fields.
-//        mTitleDetailText.setText("");
-//        mDescDetailText.setText("");
-//        mDateDetailText.setText("");// Select "Unknown" gender
-//        mAuthorDetailText.setText("");
-//        Picasso.get().load("").into(mImageDetail);
-//        mURLDetailText.setText("");
-
         finish();
     }
 

@@ -43,10 +43,13 @@ public class SavedNewsActivity extends AppCompatActivity implements
         newsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                Intent intent = new Intent(SavedNewsActivity.this,  DetailNewsFromSavedActivity.class);
+                Intent newsDetailIntent = new Intent(SavedNewsActivity.this,  DetailNewsFromSavedActivity.class);
                 Uri currentNewsUri = ContentUris.withAppendedId(NewsContract.NewsEntry.CONTENT_URI, id);
-                intent.setData(currentNewsUri);
-                startActivity(intent);
+                newsDetailIntent.setData(currentNewsUri);
+
+                Log.i("currentNewsUriDB", String.valueOf(currentNewsUri));
+
+                startActivity(newsDetailIntent);
                 finish();
             }
         });
